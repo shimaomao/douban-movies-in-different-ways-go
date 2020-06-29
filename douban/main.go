@@ -8,6 +8,7 @@ import (
 	"os"
 	"path"
 	"strconv"
+	"strings"
 	"sync"
 	"time"
 
@@ -166,7 +167,8 @@ func saveConsumer(coverCH chan Cover, saveWG *sync.WaitGroup) {
 	for cover := range coverCH {
 		saveWG.Add(1)
 		go func(c Cover) {
-			coverName, err := coverName(c.Title)
+			title := strings.ReplaceAll(c.Title, "/", "-")
+			coverName, err := coverName(title)
 			if err != nil {
 				panic(err)
 			}
